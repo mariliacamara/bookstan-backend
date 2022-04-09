@@ -17,6 +17,7 @@ async function bootstrap() {
   app.use(helmet());
 
   const config = new DocumentBuilder()
+    .addServer(appHost)
     .setTitle(appName)
     .setDescription(appDescription)
     .setVersion('1.0')

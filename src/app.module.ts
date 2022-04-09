@@ -1,8 +1,13 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CatsModule } from './cats/cats.module';
+import * as dotenv from 'dotenv';
+import { ConfigModule } from '@nestjs/config';
+import { BookModule } from './books/books.module'
+
+dotenv.config();
 
 const {
+  NODE_ENV: environment,
   MONGO_HOST: mongoHost,
   MONGO_PORT: mongoPort,
   MONGO_DB: mongoDatabase,
@@ -10,12 +15,29 @@ const {
   MONGO_PASSWORD: mongoPassword,
 } = process.env;
 
+let connectionObject;
+
+if (environment !== 'development') {
+  connectionObject = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+    tlsInsecure: true,
+  }
+}
+
 @Module({
   imports: [
     MongooseModule.forRoot(
-      `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDatabase}?authSource=admin`,
+      environment === 'development'
+        ? `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDatabase}?authSource=admin`
+        : `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDatabase}?authSource=admin&replicaSet=replsetc`,
     ),
-    CatsModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env'
+    }),
+    BookModule
   ],
 })
 export class AppModule {}
