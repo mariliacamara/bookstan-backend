@@ -3,7 +3,7 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 import { ResponseTemplates } from '../shared/responses';
 import { CreateBookDTO, UpdateBookDTO } from './books.dto';
-import { BookService } from './books.service';
+import { BooksService } from './books.service';
 
 let ObjectId = require('mongoose').Types.ObjectId;
 
@@ -11,7 +11,7 @@ let ObjectId = require('mongoose').Types.ObjectId;
 @Controller('book')
 export class BookController {
   constructor(
-    public readonly bookService: BookService,
+    public readonly booksService: BooksService,
     public response: ResponseTemplates,
   ) {}
 
@@ -21,7 +21,7 @@ export class BookController {
   @ApiResponse({ status: 404, description: 'Something went wrong!'})
   async create(@Body() data: CreateBookDTO, @Res() res: Response) {
     try {
-      const book = await this.bookService.create(data);
+      const book = await this.booksService.create(data);
       return this.response.success(res, HttpStatus.CREATED, book);
     } catch(err) {
       return this.response.error(res, HttpStatus.BAD_REQUEST, err.message);
@@ -31,7 +31,7 @@ export class BookController {
   @Get()
   @ApiResponse({ status: 200, description: 'The response has been successfully retrieved.'})
   async getAll(@Res() res: Response) {
-    const books = await this.bookService.findAll();
+    const books = await this.booksService.findAll();
     if (books.length === 0) {
       return this.response.error(res, HttpStatus.OK, 'Your book vault is empty');
     }
@@ -45,7 +45,8 @@ export class BookController {
     const validId = ObjectId.isValid(id);
 
     if (validId) {
-      const book = await this.bookService.findById(id);
+      const book = await this.booksService.findById(id);
+      console.log(book);
       return this.response.success(res, HttpStatus.OK, book);
     } else {
       return this.response.error(res, HttpStatus.NOT_FOUND, 'The book has not been found');
@@ -58,11 +59,11 @@ export class BookController {
   @ApiResponse({ status: 400, description: 'Bad request.'})
   async update(@Param('id') id: string, @Body() data: UpdateBookDTO, @Res() res: Response) {
     try {
-      const book = await this.bookService.update(id, data);
+      const book = await this.booksService.update(id, data);
       if (!book || book.hasOwnProperty('statusCode')) {
         return this.response.error(res, HttpStatus.NOT_FOUND, 'Book not found');
       }
-      const updatedBook = await this.bookService.findById(id);
+      const updatedBook = await this.booksService.findById(id);
       return this.response.success(res, HttpStatus.OK, updatedBook);
     } catch (err) {
       return this.response.error(res, HttpStatus.BAD_REQUEST, err.message);
@@ -74,7 +75,7 @@ export class BookController {
   @ApiResponse({ status: 400, description: 'Bad request.'})
   async delete(@Param('id') id: string, @Res() res: Response) {
     try {
-      const book = await this.bookService.delete(id);
+      await this.booksService.delete(id);
       return this.response.success(res, HttpStatus.OK, 'The book was successfully removed from the table.');
     } catch (err) {
       return this.response.error(res, HttpStatus.BAD_REQUEST, err.message);
