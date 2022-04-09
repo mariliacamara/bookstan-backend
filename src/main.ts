@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import * as helmet from 'helmet';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 const {
   APP_HOST: appHost,
@@ -12,6 +14,9 @@ const {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  // app.use(cookieParser());
 
   app.enableCors();
   app.use(helmet());

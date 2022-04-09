@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { ConfigModule } from '@nestjs/config';
-import { BookModule } from './books/books.module'
+import { BooksModule } from './books/books.module'
+import { GenresModule } from './genres/genres.module';
 
 dotenv.config();
 
@@ -37,7 +38,8 @@ if (environment !== 'development') {
       isGlobal: true,
       envFilePath: '.env'
     }),
-    BookModule
+    BooksModule,
+    GenresModule,
   ],
 })
 export class AppModule {}
