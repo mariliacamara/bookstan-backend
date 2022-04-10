@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ResponseTemplates } from '../shared/responses';
+import { ResponseTemplates } from '../../shared/responses';
 import { BookController } from './books.controller';
 import { BooksService } from './books.service';
 import { Book, BookSchema } from './book.schema';

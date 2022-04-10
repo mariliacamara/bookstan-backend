@@ -1,7 +1,7 @@
 import { HttpStatus, Body, Controller, Res, Param, Get, Post, Put, Delete } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
-import { ResponseTemplates } from '../shared/responses';
+import { ResponseTemplates } from '../../shared/responses';
 import { CreateBookDTO, UpdateBookDTO } from './books.dto';
 import { BooksService } from './books.service';
 

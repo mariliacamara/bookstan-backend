@@ -36,10 +36,6 @@ export class BooksService {
     const book = await this.BookModel
       .findByIdAndUpdate(id, data)
 
-    book.genres.forEach((genre) => {
-      console.log(genre)
-    })
-
     if (!book) {
       throw new NotFoundException();
     }

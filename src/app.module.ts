@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import * as dotenv from 'dotenv';
 import { ConfigModule } from '@nestjs/config';
-import { BooksModule } from './books/books.module'
-import { GenresModule } from './genres/genres.module';
+import { BooksModule } from './modules/books/books.module'
+import { GenresModule } from './modules/genres/genres.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ if (environment !== 'development') {
       isGlobal: true,
       envFilePath: '.env'
     }),
+    AuthModule,
     BooksModule,
     GenresModule,
   ],

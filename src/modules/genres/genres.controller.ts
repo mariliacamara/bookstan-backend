@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
-import { ResponseTemplates } from '../shared/responses';
+import { ResponseTemplates } from '../../shared/responses';
 import { CreateGenreDTO, UpdateGenreDTO } from './genre.dto';
 import { GenresService } from './genres.service';
 
