@@ -35,6 +35,9 @@ export class Book extends Document {
   @Prop({ type: Boolean, default: false })
   borrowed: boolean;
 
+  @Prop({ type: String })
+  borrowedTo: string;
+
   @Prop({ default: Date.now })
   createdAt!: Date;
 

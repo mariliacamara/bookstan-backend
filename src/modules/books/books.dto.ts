@@ -27,6 +27,9 @@ export class CreateBookDTO {
   readonly borrowed: boolean;
 
   @ApiProperty()
+  readonly borrowedTo: string;
+
+  @ApiProperty()
   readonly createdAt!: Date;
 
   @ApiProperty()
